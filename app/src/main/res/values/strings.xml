@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">CREATY</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="photo_editor">Photo Editor</string>
+    <string name="photo_editor_select_image">Select an image</string>
+    <string name="photo_editor_process">Edit sample image</string>
+    <string name="ic_delete">"\ue92c"</string>
+</resources>

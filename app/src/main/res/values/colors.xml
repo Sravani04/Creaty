@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#E7C943</color>
+    <!--<color name="colorPrimaryDark">#303F9F</color>-->
+    <color name="colorPrimaryDark">#E7C943</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="white">#FFFFFF</color>
+
+    <color name="bottom_button_text_default_color">#B3C2D6</color>
+    <color name="bottom_button_text_pressed_color">#00C0FF</color>
+    <color name="bottom_button_text_disable_color">#EEB3C2D6</color>
+    <color name="bottom_button_background_default_color">#E5414850</color>
+    <color name="bottom_button_background_pressed_color">#991C1F27</color>
+    <color name="bottom_button_background_disable_color">#CC414850</color>
+
+    <color name="black">#000000</color>
+
+    <color name="blue_color_picker">#0066FF</color>
+    <color name="brown_color_picker">#AF593E</color>
+    <color name="green_color_picker">#01A368</color>
+    <color name="orange_color_picker">#FF861F</color>
+    <color name="red_color_picker">#ED0A3F</color>
+    <color name="red_orange_color_picker">#FF3F34</color>
+    <color name="sky_blue_color_picker">#76D7EA</color>
+    <color name="violet_color_picker">#8359A3</color>
+    <color name="yellow_color_picker">#FBE870</color>
+    <color name="yellow_green_color_picker">#C5E17A</color>
+    <color name="headercolor">#E7C943</color>
+    <color name="green">#3CB371</color>
+</resources>
