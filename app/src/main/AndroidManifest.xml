@@ -46,6 +46,9 @@
         <activity android:name=".GalleryActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".GalleryImageActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".PaymentPage" android:screenOrientation="portrait"></activity>
+        <activity android:name=".OrdersPage" android:screenOrientation="portrait"></activity>
+        <activity android:name=".OrderDetailPage" android:screenOrientation="portrait"></activity>
+        <activity android:name=".ThankyouScreen" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
