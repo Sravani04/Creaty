@@ -55,7 +55,7 @@ public class CheckoutPage extends AppCompatActivity {
     ImageView back_btn,country_dropdown,state_dropdown,imageView2,imageView3;
     TextView login_btn,total_amount,ship_amt,final_cost,state_option,country_option,credit_card,paypal;
     String total_price,shipping_price,city_id,country_id,state_id;
-    EditText email,fname,lname,address,pincode,city;
+    EditText email,fname,lname,address,pincode,city,phone;
     LinearLayout country,select_state;
     ArrayList<Country> countriesfrom_api;
     Country selectedCountry;
@@ -91,6 +91,7 @@ public class CheckoutPage extends AppCompatActivity {
         paypal = (TextView) findViewById(R.id.paypal);
         imageView2 = (ImageView) findViewById(R.id.imageView2);
         imageView3 = (ImageView) findViewById(R.id.imageView3);
+        phone = (EditText) findViewById(R.id.phone);
 
 
         countriesfrom_api = new ArrayList<>();
@@ -197,7 +198,9 @@ public class CheckoutPage extends AppCompatActivity {
         paypal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(CheckoutPage.this,PaymentPage.class);
+                intent.putExtra("amount",final_cost.getText().toString());
+                startActivityForResult(intent,1);
             }
         });
 
@@ -342,6 +345,7 @@ public class CheckoutPage extends AppCompatActivity {
                             address.setText(jsonObject.get("address").getAsString());
                             city.setText(jsonObject.get("city").getAsString());
                             pincode.setText(jsonObject.get("pincode").getAsString());
+                            phone.setText(jsonObject.get("phone").getAsString());
 
                         }catch (Exception e1){
                             e1.printStackTrace();
@@ -562,6 +566,9 @@ public class CheckoutPage extends AppCompatActivity {
         }else if (lname.getText().toString().equals("")){
             Toast.makeText(CheckoutPage.this,"Please Enter Last Name",Toast.LENGTH_SHORT).show();
             lname.requestFocus();
+        }else if (phone.getText().toString().equals("")){
+            Toast.makeText(CheckoutPage.this,"Please Enter Phone",Toast.LENGTH_SHORT).show();
+            phone.requestFocus();
         }else if (city.getText().toString().equals("")){
             Toast.makeText(CheckoutPage.this,"Please Enter City",Toast.LENGTH_SHORT).show();
             city.requestFocus();
@@ -590,9 +597,9 @@ public class CheckoutPage extends AppCompatActivity {
                                         startActivity(intent);
                                         finish();
                                     } else {
-//                                        Intent intent = new Intent(CheckoutPage.this, ThankYouPage.class);
-//                                        startActivity(intent);
-//                                         finish();
+                                        Intent intent = new Intent(CheckoutPage.this, ThankyouScreen.class);
+                                        startActivity(intent);
+                                         finish();
                                     }
                                 } else {
                                     Toast.makeText(CheckoutPage.this, result.get("message").getAsString(), Toast.LENGTH_SHORT).show();

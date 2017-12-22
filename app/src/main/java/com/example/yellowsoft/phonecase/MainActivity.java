@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Handler;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
     ImageView menu_btn;
     ViewPager viewPager;
     MainActivityAdapter adapter;
-    LinearLayout menu_popup,case_btn,home_click,store_click,template_click,profile_click,logout_btn;
     ArrayList<Integer> images;
     int currentPage = 0;
     Timer timer;
@@ -39,6 +40,22 @@ public class MainActivity extends AppCompatActivity {
     Uri bitmapUri;
     ArrayList<Banners> bannersfrom_api;
     TextView cart_items;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
+    LinearLayout drawerView;
+    RelativeLayout mainView;
+    TextView home_btn,coll_btn,profile_btn,orders_btn;
+
+
+    private void openNavigation(){
+
+        if(mDrawerLayout.isDrawerOpen(GravityCompat.START))
+
+            mDrawerLayout.closeDrawer(GravityCompat.START,true);
+        else
+            mDrawerLayout.openDrawer(GravityCompat.START,true);
+
+    }
 
 
 
@@ -47,19 +64,51 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         menu_btn = (ImageView) findViewById(R.id.menu_btn);
-        menu_popup = (LinearLayout) findViewById(R.id.menu_popup);
         viewPager = (ViewPager) findViewById(R.id.view_pager);
       //  case_btn = (LinearLayout) findViewById(R.id.case_btn);
-        home_click = (LinearLayout) findViewById(R.id.home_click);
-        store_click = (LinearLayout) findViewById(R.id.store_click);
-        template_click = (LinearLayout) findViewById(R.id.template_click);
-        profile_click = (LinearLayout) findViewById(R.id.profile_click);
         design_btn = (RelativeLayout) findViewById(R.id.design_btn);
         collection_btn = (RelativeLayout) findViewById(R.id.collection_btn);
         previous_btn = (ImageView) findViewById(R.id.previous_btn);
         next_btn = (ImageView) findViewById(R.id.next_btn);
         cart_btn = (ImageView) findViewById(R.id.cart_btn);
         cart_items = (TextView) findViewById(R.id.cart_items);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        home_btn = (TextView) findViewById(R.id.home_btn);
+        coll_btn = (TextView) findViewById(R.id.coll_btn);
+        profile_btn = (TextView) findViewById(R.id.profile_btn);
+        orders_btn = (TextView) findViewById(R.id.orders_btn);
+
+        mDrawerLayout.setScrimColor(getResources().getColor(android.R.color.transparent));
+
+        drawerView = (LinearLayout) findViewById(R.id.drawerView);
+        mainView = (RelativeLayout) findViewById(R.id.mainView);
+
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, null, R.string.app_name, R.string.app_name) {
+
+            public void onDrawerClosed(View view) {
+                supportInvalidateOptionsMenu();
+
+            }
+
+            public void onDrawerOpened(View drawerView) {
+                supportInvalidateOptionsMenu();
+            }
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                super.onDrawerSlide(drawerView, slideOffset);
+                mainView.setTranslationX(slideOffset * drawerView.getWidth());
+//                if (Session.GetLang(MainActivity.this).equals("en")){
+//                    mainView.setTranslationX(slideOffset * drawerView.getWidth());
+//                }else {
+//                    mainView.setTranslationX(-slideOffset * drawerView.getWidth());
+//                }
+                mDrawerLayout.bringChildToFront(drawerView);
+                mDrawerLayout.requestLayout();
+
+
+            }
+        };
 
 
         bannersfrom_api = new ArrayList<>();
@@ -125,43 +174,34 @@ public class MainActivity extends AppCompatActivity {
         menu_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (menu_popup.isShown()){
-                    menu_popup.setVisibility(View.GONE);
-                }else {
-                    menu_popup.setVisibility(View.VISIBLE);
-                }
+                openNavigation();
             }
         });
 
-        home_click.setOnClickListener(new View.OnClickListener() {
+
+        home_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent  = new Intent(MainActivity.this,MainActivity.class);
                 startActivity(intent);
-                menu_popup.setVisibility(View.GONE);
+                mDrawerLayout.closeDrawer(GravityCompat.START, true);
             }
         });
 
-        template_click.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,TemplateScreen.class);
-                startActivity(intent);
-                menu_popup.setVisibility(View.GONE);
-            }
-        });
 
-        store_click.setOnClickListener(new View.OnClickListener() {
+
+        coll_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this,CollocationActivity.class);
+                intent.putExtra("custom","0");
                 startActivity(intent);
-                menu_popup.setVisibility(View.GONE);
+                mDrawerLayout.closeDrawer(GravityCompat.START, true);
 
             }
         });
 
-        profile_click.setOnClickListener(new View.OnClickListener() {
+        profile_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (Session.GetUserId(MainActivity.this).equals("-1")) {
@@ -171,9 +211,24 @@ public class MainActivity extends AppCompatActivity {
                 }else {
                     Intent intent = new Intent(MainActivity.this, MyProfilePage.class);
                     startActivity(intent);
-                    menu_popup.setVisibility(View.GONE);
+                    mDrawerLayout.closeDrawer(GravityCompat.START, true);
                 }
 
+            }
+        });
+
+        orders_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Session.GetUserId(MainActivity.this).equals("-1")) {
+                    Intent intent = new Intent(MainActivity.this, LoginPage.class);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    Intent intent = new Intent(MainActivity.this, OrdersPage.class);
+                    startActivity(intent);
+                    mDrawerLayout.closeDrawer(GravityCompat.START, true);
+                }
             }
         });
 

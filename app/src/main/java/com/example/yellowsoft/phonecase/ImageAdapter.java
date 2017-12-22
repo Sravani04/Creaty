@@ -88,6 +88,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.SimpleViewHo
 
         final Uri targetUri = Uri.parse(images.get(position).getPath().toString());
         holder.imgIcon.setImageURI(targetUri);
+        activity.image_position = position;
         holder.imgIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,6 +110,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.SimpleViewHo
 //                        Toast.LENGTH_SHORT).show();
 }
         });
+
+
+
 
 
 //        holder.imgIcon.setOnDragListener(activity.new MyDragListener());

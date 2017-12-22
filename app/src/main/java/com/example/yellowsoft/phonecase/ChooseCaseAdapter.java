@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -28,12 +29,14 @@ public class ChooseCaseAdapter extends RecyclerView.Adapter<ChooseCaseAdapter.Si
     public static  class SimpleViewHolder  extends  RecyclerView.ViewHolder{
         TextView case_title,case_price;
         ImageView case_image,next_btn;
+        LinearLayout item;
         public SimpleViewHolder(View view) {
             super(view);
             case_title = (TextView) view.findViewById(R.id.case_title);
             case_price = (TextView) view.findViewById(R.id.case_cost);
             case_image = (ImageView) view.findViewById(R.id.case_image);
             next_btn = (ImageView) view.findViewById(R.id.next_btn);
+            item = (LinearLayout) view.findViewById(R.id.item);
 
 
         }
@@ -61,7 +64,7 @@ public class ChooseCaseAdapter extends RecyclerView.Adapter<ChooseCaseAdapter.Si
         holder.case_price.setText(products.get(position).price + " " + "KD");
       //  holder.case_image.setImageResource(images.get(position));
         Picasso.with(context).load(products.get(position).images.get(0).image).into(holder.case_image);
-        holder.next_btn.setOnClickListener(new View.OnClickListener() {
+        holder.item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context,ProductDetail.class);
@@ -70,31 +73,6 @@ public class ChooseCaseAdapter extends RecyclerView.Adapter<ChooseCaseAdapter.Si
             }
         });
 
-        holder.case_title.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context,ProductDetail.class);
-                intent.putExtra("products",products.get(position));
-                context.startActivity(intent);
-            }
-        });
-        holder.case_price.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context,ProductDetail.class);
-                intent.putExtra("products",products.get(position));
-                context.startActivity(intent);
-            }
-        });
-
-        holder.case_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context,ProductDetail.class);
-                intent.putExtra("products",products.get(position));
-                context.startActivity(intent);
-            }
-        });
     }
 
 
