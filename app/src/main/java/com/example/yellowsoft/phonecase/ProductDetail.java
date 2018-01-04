@@ -13,10 +13,12 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonArray;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.squareup.picasso.Picasso;
@@ -46,6 +48,7 @@ public class ProductDetail extends Activity {
     ImageView product_image;
     TextView cart_items;
     ArrayList<Products> productsfrom_api;
+    ProgressBar progressBar;
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -75,12 +78,34 @@ public class ProductDetail extends Activity {
         colorsAdapter = new ColorsAdapter(this,products);
         gridView.setAdapter(colorsAdapter);
 
+        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress);
+
+
+        progressBar.setVisibility(View.GONE);
         Picasso.with(ProductDetail.this).load(products.images.get(0).image).into(product_image);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Picasso.with(ProductDetail.this).load(products.images.get(i).image).into(product_image);
+                progressBar.setVisibility(View.VISIBLE);
+                progressBar.setIndeterminate(true);
+                progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.headercolor), android.graphics.PorterDuff.Mode.MULTIPLY);
+                Picasso.with(ProductDetail.this).load(products.images.get(i).image)
+                        .into(product_image, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                if (progressBar != null) {
+                                    progressBar.setVisibility(View.GONE);
+                                }
+                            }
+
+                            @Override
+                            public void onError() {
+
+                            }
+                        });
+
+               // Picasso.with(ProductDetail.this).load(products.images.get(i).image).into(product_image);
                 Log.e("image",products.images.get(i).image);
             }
         });
@@ -145,13 +170,26 @@ public class ProductDetail extends Activity {
 
 
 
-        cart_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ProductDetail.this,CartPage.class);
-                startActivity(intent);
-            }
-        });
+        if (Session.GetCartProducts(this).size() == 0){
+            Log.e("cart","disabled");
+            cart_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(ProductDetail.this,CartEmpty.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+        }else {
+            cart_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(ProductDetail.this, CartPage.class);
+                    startActivity(intent);
+
+                }
+            });
+        }
 
 
 

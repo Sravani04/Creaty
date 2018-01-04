@@ -16,6 +16,16 @@
             android:scaleType="centerCrop"
             android:src="@drawable/placeholder" />
 
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:progressTint="@color/headercolor"
+            android:visibility="visible" />
+
         <TextView
             android:id="@+id/device_title"
             android:layout_width="wrap_content"

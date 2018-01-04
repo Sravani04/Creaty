@@ -8,8 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -29,10 +31,12 @@ public class SelectDeviceAdapter extends RecyclerView.Adapter<SelectDeviceAdapte
     public static  class SimpleViewHolder  extends  RecyclerView.ViewHolder{
         TextView device_title;
         ImageView device_image;
+        ProgressBar progressBar;
         public SimpleViewHolder(View view) {
             super(view);
             device_image = (ImageView) view.findViewById(R.id.device_image);
             device_title = (TextView) view.findViewById(R.id.device_title);
+            progressBar  = (ProgressBar) view.findViewById(R.id.progress);
 
         }
     }
@@ -56,7 +60,22 @@ public class SelectDeviceAdapter extends RecyclerView.Adapter<SelectDeviceAdapte
     public void onBindViewHolder(final SelectDeviceAdapter.SimpleViewHolder holder, final int position) {
         holder.device_title.setText(brands.models.get(position).title);
         Log.e("titles",brands.models.get(position).title);
-        Picasso.with(context).load(brands.models.get(position).image).placeholder(R.drawable.placeholder).into(holder.device_image);
+        holder.progressBar.setVisibility(View.VISIBLE);
+        holder.progressBar.setIndeterminate(true);
+        holder.progressBar.getIndeterminateDrawable().setColorFilter(context.getResources().getColor(R.color.headercolor), android.graphics.PorterDuff.Mode.MULTIPLY);
+        Picasso.with(context).load(brands.models.get(position).image).placeholder(R.drawable.placeholder).into(holder.device_image,new com.squareup.picasso.Callback() {
+            @Override
+            public void onSuccess() {
+                if (holder.progressBar != null) {
+                    holder.progressBar.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
         holder.device_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

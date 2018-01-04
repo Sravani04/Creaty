@@ -85,6 +85,7 @@ public class ChangePasswordPage extends Activity {
                                 hud.dismiss();
                                 if (result.get("status").getAsString().equals("Success")) {
                                     Toast.makeText(ChangePasswordPage.this, result.get("message").getAsString(), Toast.LENGTH_SHORT).show();
+                                    ChangePasswordPage.this.onBackPressed();
                                 } else {
                                     Toast.makeText(ChangePasswordPage.this, result.get("message").getAsString(), Toast.LENGTH_SHORT).show();
                                 }

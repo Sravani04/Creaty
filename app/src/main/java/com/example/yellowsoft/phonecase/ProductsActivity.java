@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.JsonArray;
@@ -32,6 +33,7 @@ public class ProductsActivity extends Activity {
     ArrayList<Brands> brandsfrom_api;
     ArrayList<Products> productsfrom_api;
     TextView cart_items;
+    RelativeLayout cart;
 
 
     @Override
@@ -41,6 +43,7 @@ public class ProductsActivity extends Activity {
         back_btn = (ImageView) findViewById(R.id.back_btn);
         cart_btn = (ImageView) findViewById(R.id.cart_btn);
         cart_items = (TextView) findViewById(R.id.cart_items);
+        cart = (RelativeLayout) findViewById(R.id.cart);
         titles = new ArrayList<>();
         brandsfrom_api = new ArrayList<>();
         productsfrom_api = new ArrayList<>();
@@ -79,13 +82,27 @@ public class ProductsActivity extends Activity {
             }
         });
 
-        cart_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ProductsActivity.this,CartPage.class);
-                startActivity(intent);
-            }
-        });
+        if (Session.GetCartProducts(this).size() == 0){
+            Log.e("cart","disabled");
+            cart_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(ProductsActivity.this,CartEmpty.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+        }else {
+            cart_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(ProductsActivity.this, CartPage.class);
+                    startActivity(intent);
+
+                }
+            });
+        }
+
 
         get_brands();
 

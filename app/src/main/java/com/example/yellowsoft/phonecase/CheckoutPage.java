@@ -53,7 +53,7 @@ import java.util.ArrayList;
 
 public class CheckoutPage extends AppCompatActivity {
     ImageView back_btn,country_dropdown,state_dropdown,imageView2,imageView3;
-    TextView login_btn,total_amount,ship_amt,final_cost,state_option,country_option,credit_card,paypal;
+    TextView login_btn,total_amount,ship_amt,final_cost,state_option,country_option,payment,paypal;
     String total_price,shipping_price,city_id,country_id,state_id;
     EditText email,fname,lname,address,pincode,city,phone;
     LinearLayout country,select_state;
@@ -69,7 +69,7 @@ public class CheckoutPage extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.checkout_page);
-        login_btn = (TextView) findViewById(R.id.login_btn);
+       // login_btn = (TextView) findViewById(R.id.login_btn);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         total_amount = (TextView) findViewById(R.id.total_amount);
         ship_amt = (TextView) findViewById(R.id.ship_amt);
@@ -87,8 +87,8 @@ public class CheckoutPage extends AppCompatActivity {
         country_dropdown = (ImageView) findViewById(R.id.country_dropdown);
         select_state = (LinearLayout) findViewById(R.id.select_state);
         state_dropdown = (ImageView) findViewById(R.id.state_dropdown);
-        credit_card = (TextView) findViewById(R.id.credit_card);
-        paypal = (TextView) findViewById(R.id.paypal);
+        payment = (TextView) findViewById(R.id.payment);
+//        paypal = (TextView) findViewById(R.id.paypal);
         imageView2 = (ImageView) findViewById(R.id.imageView2);
         imageView3 = (ImageView) findViewById(R.id.imageView3);
         phone = (EditText) findViewById(R.id.phone);
@@ -117,24 +117,24 @@ public class CheckoutPage extends AppCompatActivity {
 
 
 
-        if (Session.GetUserId(CheckoutPage.this).equals("-1")) {
-            login_btn.setVisibility(View.VISIBLE);
-        }else {
-           login_btn.setVisibility(View.GONE);
-        }
+//        if (Session.GetUserId(CheckoutPage.this).equals("-1")) {
+//            login_btn.setVisibility(View.VISIBLE);
+//        }else {
+//           login_btn.setVisibility(View.GONE);
+//        }
 
 
         total_amount.setText(total_price + "KD");
-        final_cost.setText(total_price);
+        final_cost.setText(total_price+"KD");
         Log.e("final_cost",final_cost.getText().toString());
 
-        login_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(CheckoutPage.this,LoginPage.class);
-                startActivity(intent);
-            }
-        });
+//        login_btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(CheckoutPage.this,LoginPage.class);
+//                startActivity(intent);
+//            }
+//        });
 
         country.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,25 +184,41 @@ public class CheckoutPage extends AppCompatActivity {
             }
         });
 
-        credit_card.setOnClickListener(new View.OnClickListener() {
+        payment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CheckoutPage.this,PaymentPage.class);
-                intent.putExtra("amount",final_cost.getText().toString());
-                startActivityForResult(intent,1);
+                 if (email.getText().toString().equals("")){
+                    Toast.makeText(CheckoutPage.this,"Please Enter Email",Toast.LENGTH_SHORT).show();
+                    email.requestFocus();
+                }else if (fname.getText().toString().equals("")){
+                    Toast.makeText(CheckoutPage.this,"Please Enter First Name",Toast.LENGTH_SHORT).show();
+                    fname.requestFocus();
+                }else if (lname.getText().toString().equals("")){
+                    Toast.makeText(CheckoutPage.this,"Please Enter Last Name",Toast.LENGTH_SHORT).show();
+                    lname.requestFocus();
+                }else if (phone.getText().toString().equals("")){
+                    Toast.makeText(CheckoutPage.this,"Please Enter Phone",Toast.LENGTH_SHORT).show();
+                    phone.requestFocus();
+                }else if (city.getText().toString().equals("")){
+                    Toast.makeText(CheckoutPage.this,"Please Enter City",Toast.LENGTH_SHORT).show();
+                    city.requestFocus();
+                }else if (address.getText().toString().equals("")){
+                    Toast.makeText(CheckoutPage.this,"Please Enter Address",Toast.LENGTH_SHORT).show();
+                    address.requestFocus();
+                }else if (pincode.getText().toString().equals("")){
+                    Toast.makeText(CheckoutPage.this,"Please Enter Pincode",Toast.LENGTH_SHORT).show();
+                    pincode.requestFocus();
+                }else {
+                    Intent intent = new Intent(CheckoutPage.this, PaymentPage.class);
+                    intent.putExtra("amount", total_price);
+                    startActivityForResult(intent, 1);
+                }
                // place_order();
 
             }
         });
 
-        paypal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(CheckoutPage.this,PaymentPage.class);
-                intent.putExtra("amount",final_cost.getText().toString());
-                startActivityForResult(intent,1);
-            }
-        });
+
 
         get_members();
 
@@ -557,28 +573,7 @@ public class CheckoutPage extends AppCompatActivity {
         jsonObject.addProperty("delivery_charges",shipping_price);
         jsonObject.addProperty("payment_method","Tap");
         Log.e("reeeee",jsonObject.toString());
-        if (address.getText().toString().equals("")){
-            Toast.makeText(CheckoutPage.this,"Please Enter Address",Toast.LENGTH_SHORT).show();
-            address.requestFocus();
-        }else if (fname.getText().toString().equals("")){
-            Toast.makeText(CheckoutPage.this,"Please Enter First Name",Toast.LENGTH_SHORT).show();
-            fname.requestFocus();
-        }else if (lname.getText().toString().equals("")){
-            Toast.makeText(CheckoutPage.this,"Please Enter Last Name",Toast.LENGTH_SHORT).show();
-            lname.requestFocus();
-        }else if (phone.getText().toString().equals("")){
-            Toast.makeText(CheckoutPage.this,"Please Enter Phone",Toast.LENGTH_SHORT).show();
-            phone.requestFocus();
-        }else if (city.getText().toString().equals("")){
-            Toast.makeText(CheckoutPage.this,"Please Enter City",Toast.LENGTH_SHORT).show();
-            city.requestFocus();
-        }else if (email.getText().toString().equals("")){
-            Toast.makeText(CheckoutPage.this,"Please Enter Email",Toast.LENGTH_SHORT).show();
-            email.requestFocus();
-        }else if (pincode.getText().toString().equals("")){
-            Toast.makeText(CheckoutPage.this,"Please Enter Pincode",Toast.LENGTH_SHORT).show();
-            pincode.requestFocus();
-        }else {
+
             Ion.with(this)
                     .load(Session.SERVER_URL + "place-order.php")
                     .setBodyParameter("content",jsonObject.toString())
@@ -586,21 +581,17 @@ public class CheckoutPage extends AppCompatActivity {
                     .setCallback(new FutureCallback<JsonObject>() {
                         @Override
                         public void onCompleted(Exception e, JsonObject result) {
+                            hud.dismiss();
                             try {
-                                hud.dismiss();
                                 if (result.get("status").getAsString().equals("Success")) {
                                     Log.e("order_id",result.get("order_id").getAsString());
                                     Log.e("result", result.get("message").getAsString());
                                     Toast.makeText(CheckoutPage.this, result.get("message").getAsString(), Toast.LENGTH_SHORT).show();
-                                    if (Session.GetUserId(CheckoutPage.this).equals("-1")) {
-                                        Intent intent = new Intent(CheckoutPage.this, RegisterPage.class);
-                                        startActivity(intent);
-                                        finish();
-                                    } else {
+                                    Session.deleteCart(CheckoutPage.this);
                                         Intent intent = new Intent(CheckoutPage.this, ThankyouScreen.class);
                                         startActivity(intent);
                                          finish();
-                                    }
+
                                 } else {
                                     Toast.makeText(CheckoutPage.this, result.get("message").getAsString(), Toast.LENGTH_SHORT).show();
                                 }
@@ -610,5 +601,5 @@ public class CheckoutPage extends AppCompatActivity {
                         }
                     });
         }
-    }
+
 }

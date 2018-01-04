@@ -93,9 +93,9 @@ public class EditProfilePage extends Activity {
                         public void onCompleted(Exception e, JsonObject result) {
                             try {
                                 hud.dismiss();
-                                Log.e("editresult",result.toString());
                                 if (result.get("status").getAsString().equals("Success")) {
                                     Toast.makeText(EditProfilePage.this, result.get("message").getAsString(), Toast.LENGTH_SHORT).show();
+                                    EditProfilePage.this.onBackPressed();
                                 } else {
                                     Toast.makeText(EditProfilePage.this, result.get("message").getAsString(), Toast.LENGTH_SHORT).show();
                                 }

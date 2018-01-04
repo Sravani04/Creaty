@@ -41,16 +41,27 @@ public class Orders implements Serializable {
         crd = jsonObject.get("crd").getAsString();
         hashcode = jsonObject.get("hashcode").getAsString();
         for (int i=0;i<jsonObject.get("products").getAsJsonArray().size();i++){
-             product_id = jsonObject.get("products").getAsJsonArray().get(i).getAsJsonObject().get("product_id").getAsString();
-             product_name = jsonObject.get("products").getAsJsonArray().get(i).getAsJsonObject().get("product_name").getAsString();
-            product_name_ar = jsonObject.get("products").getAsJsonArray().get(i).getAsJsonObject().get("product_name_ar").getAsString();
-            quantity = jsonObject.get("products").getAsJsonArray().get(i).getAsJsonObject().get("quantity").getAsString();
-            product_price = jsonObject.get("products").getAsJsonArray().get(i).getAsJsonObject().get("price").getAsString();
-            total = jsonObject.get("products").getAsJsonArray().get(i).getAsJsonObject().get("total").getAsString();
-            customized = jsonObject.get("products").getAsJsonArray().get(i).getAsJsonObject().get("customized").getAsString();
-            original_image = jsonObject.get("products").getAsJsonArray().get(i).getAsJsonObject().get("original_image").getAsString();
-            modified_image = jsonObject.get("products").getAsJsonArray().get(i).getAsJsonObject().get("modified_image").getAsString();
-            photo_text = jsonObject.get("products").getAsJsonArray().get(i).getAsJsonObject().get("photo_text").getAsString();
+            if (i==0) {
+                product_id = jsonObject.get("products").getAsJsonArray().get(i).getAsJsonObject().get("product_id").getAsString();
+                product_name = jsonObject.get("products").getAsJsonArray().get(i).getAsJsonObject().get("product_name").getAsString();
+                product_name_ar = jsonObject.get("products").getAsJsonArray().get(i).getAsJsonObject().get("product_name_ar").getAsString();
+                quantity = jsonObject.get("products").getAsJsonArray().get(i).getAsJsonObject().get("quantity").getAsString();
+                product_price = jsonObject.get("products").getAsJsonArray().get(i).getAsJsonObject().get("price").getAsString();
+                total = jsonObject.get("products").getAsJsonArray().get(i).getAsJsonObject().get("total").getAsString();
+                customized = jsonObject.get("products").getAsJsonArray().get(i).getAsJsonObject().get("customized").getAsString();
+                original_image = jsonObject.get("products").getAsJsonArray().get(i).getAsJsonObject().get("original_image").getAsString();
+                modified_image = jsonObject.get("products").getAsJsonArray().get(i).getAsJsonObject().get("modified_image").getAsString();
+                photo_text = jsonObject.get("products").getAsJsonArray().get(i).getAsJsonObject().get("photo_text").getAsString();
+            }else {
+                try {
+                    product_name = product_name+","+jsonObject.get("products").getAsJsonArray().get(i).getAsJsonObject().get("product_name").getAsString();
+                    product_name_ar = product_name_ar +","+jsonObject.get("products").getAsJsonArray().get(i).getAsJsonObject().get("product_name_ar").getAsString();
+                    quantity = quantity +","+jsonObject.get("products").getAsJsonArray().get(i).getAsJsonObject().get("quantity").getAsString();
+                    product_price = product_price+","+jsonObject.get("products").getAsJsonArray().get(i).getAsJsonObject().get("price").getAsString();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
 
         }
 

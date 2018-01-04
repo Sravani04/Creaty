@@ -54,7 +54,7 @@ public class OrdersAdapter extends BaseAdapter {
         date.setText(orders.get(position).date);
         payment_status.setText(orders.get(position).payment_status);
         delivery_status.setText(orders.get(position).delivery_status);
-        total_price.setText(orders.get(position).total + "KD");
+        total_price.setText(orders.get(position).price + "KD");
 
         item.setOnClickListener(new View.OnClickListener() {
             @Override

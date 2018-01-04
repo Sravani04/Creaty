@@ -36,7 +36,7 @@ public class OrderDetailPage extends Activity {
         quantity = (TextView) findViewById(R.id.quantity);
         price = (TextView) findViewById(R.id.price);
         delivery_charges = (TextView) findViewById(R.id.delivery_charges);
-        wc = (TextView) findViewById(R.id.wc);
+       // wc = (TextView) findViewById(R.id.wc);
         sub_total = (TextView) findViewById(R.id.sub_total);
         grand_total = (TextView) findViewById(R.id.grand_total);
         back_btn = (ImageView) findViewById(R.id.back_btn);
@@ -55,7 +55,7 @@ public class OrderDetailPage extends Activity {
         price.setText(orders.product_price);
         delivery_charges.setText(orders.delivery_charges + "KD");
         sub_total.setText(orders.price +"KD");
-        grand_total.setText(orders.total + "KD");
+        grand_total.setText(orders.price + "KD");
 
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override

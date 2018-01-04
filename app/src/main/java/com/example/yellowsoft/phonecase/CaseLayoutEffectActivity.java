@@ -47,6 +47,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.support.annotation.DimenRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -74,11 +76,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ahmedadeltito.photoeditorsdk.OnPhotoEditorSDKListener;
 import com.ahmedadeltito.photoeditorsdk.PhotoEditorSDK;
 import com.eminayar.panter.DialogType;
 import com.eminayar.panter.PanterDialog;
@@ -180,6 +182,8 @@ public class CaseLayoutEffectActivity extends Activity implements GLSurfaceView.
     boolean capture;
     Bitmap mBitmap;
     int image_position;
+    int text_position;
+
 
 
 
@@ -231,6 +235,7 @@ public class CaseLayoutEffectActivity extends Activity implements GLSurfaceView.
         cart_items = (TextView) findViewById(R.id.cart_items);
         shipping_price = (TextView) findViewById(R.id.shipping_price);
         rv = (RecyclerView) findViewById(R.id.main_list_view);
+        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress);
 //        add_to_cart = (TextView) findViewById(R.id.add_to_cart);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         productsfrom_api = new ArrayList<>();
@@ -240,11 +245,15 @@ public class CaseLayoutEffectActivity extends Activity implements GLSurfaceView.
         rv.setAdapter(imageAdapter);
         rv.setHasFixedSize(true);
 
-        rv.setLayoutManager(new GridLayoutManager(this,5,GridLayoutManager.VERTICAL,true));
-        int spanCount = 4; // 3 columns
-        int spacing = dpToPx(1); // 50px
-        boolean includeEdge = false;
-        rv.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
+        rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        ItemOffsetDecoration itemDecoration = new ItemOffsetDecoration(this, R.dimen.item_offset);
+        rv.addItemDecoration(itemDecoration);
+
+//        rv.setLayoutManager(new GridLayoutManager(this,5,GridLayoutManager.VERTICAL,true));
+//        int spanCount = 4; // 3 columns
+//        int spacing = dpToPx(1); // 50px
+//        boolean includeEdge = false;
+//        rv.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
 
 
 
@@ -305,6 +314,9 @@ public class CaseLayoutEffectActivity extends Activity implements GLSurfaceView.
         });
 
 
+        button.setEnabled(false);
+
+
         button.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
@@ -322,12 +334,6 @@ public class CaseLayoutEffectActivity extends Activity implements GLSurfaceView.
                             MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
                     return;
                 }
-
-
-
-
-
-
 
 
 
@@ -379,13 +385,29 @@ public class CaseLayoutEffectActivity extends Activity implements GLSurfaceView.
             }
         });
 
-        cart_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(CaseLayoutEffectActivity.this, CartPage.class);
-                startActivity(intent);
-            }
-        });
+        if (Session.GetCartProducts(this).size() == 0){
+            Log.e("cart","disabled");
+            cart_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(CaseLayoutEffectActivity.this,CartEmpty.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+        }else {
+            cart_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(CaseLayoutEffectActivity.this, CartPage.class);
+                    startActivity(intent);
+
+
+                }
+            });
+        }
+
+
 
 
         back_btn.setOnClickListener(new View.OnClickListener() {
@@ -394,9 +416,23 @@ public class CaseLayoutEffectActivity extends Activity implements GLSurfaceView.
                 CaseLayoutEffectActivity.this.onBackPressed();
             }
         });
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setIndeterminate(true);
+        progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.headercolor), android.graphics.PorterDuff.Mode.MULTIPLY);
+        Picasso.with(this).load(products.full_image).into(back_image, new com.squareup.picasso.Callback() {
+            @Override
+            public void onSuccess() {
+                if (progressBar != null) {
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
 
+            @Override
+            public void onError() {
 
-        Picasso.with(this).load(products.full_image).into(back_image);
+            }
+        });
+
         Picasso.with(this).load(products.transparent_image).into(top);
         Log.e("transparent_image", products.transparent_image);
 
@@ -676,6 +712,27 @@ public class CaseLayoutEffectActivity extends Activity implements GLSurfaceView.
     }
 
 
+    public class ItemOffsetDecoration extends RecyclerView.ItemDecoration {
+
+        private int mItemOffset;
+
+        public ItemOffsetDecoration(int itemOffset) {
+            mItemOffset = itemOffset;
+        }
+
+        public ItemOffsetDecoration(@NonNull Context context, @DimenRes int itemOffsetId) {
+            this(context.getResources().getDimensionPixelSize(itemOffsetId));
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
+                                   RecyclerView.State state) {
+            super.getItemOffsets(outRect, view, parent, state);
+            outRect.set(mItemOffset, mItemOffset, mItemOffset, mItemOffset);
+        }
+    }
+
+
 
 
     void onFabClick() {
@@ -893,6 +950,7 @@ public class CaseLayoutEffectActivity extends Activity implements GLSurfaceView.
                 image.setPath(Uri.parse(selected_image_path));
                 Log.e("load",selected_image_path);
                 images.add(image);
+                button.setEnabled(true);
                 addtext_btn.setEnabled(true);
                 effect_btn.setEnabled(true);
                 Toast.makeText(CaseLayoutEffectActivity.this, "Here " + getRealPathFromURI(selectedImage), Toast.LENGTH_LONG).show();
@@ -911,6 +969,7 @@ public class CaseLayoutEffectActivity extends Activity implements GLSurfaceView.
                 selected_image_uri = selectedImage;
                 backupimages.add(selected_image_uri);
                 selected_image_path = getRealPathFromURI(selectedImage);
+                button.setEnabled(true);
                 addtext_btn.setEnabled(true);
                 effect_btn.setEnabled(true);
                 Log.e("selected_image_path", selected_image_path);
@@ -937,6 +996,7 @@ public class CaseLayoutEffectActivity extends Activity implements GLSurfaceView.
                             selected_image_uri = selectedImage;
                             backupimages.add(selected_image_uri);
                             selected_image_path = getRealPathFromURI(selectedImage);
+                            button.setEnabled(true);
                             addtext_btn.setEnabled(true);
                             effect_btn.setEnabled(true);
                             Log.e("cate", bmp.toString());
@@ -961,7 +1021,9 @@ public class CaseLayoutEffectActivity extends Activity implements GLSurfaceView.
                             File f = new File(getRealPathFromURI(resultUri));
                             Drawable d = Drawable.createFromPath(f.getPath());
                             bottom_left.setBackground(d);
+
 //                      myimage2.setImageURI(resultUri);
+                            button.setEnabled(true);
                             addtext_btn.setEnabled(true);
                             effect_btn.setEnabled(true);
                             camera_btn.callOnClick();
@@ -1107,6 +1169,7 @@ public class CaseLayoutEffectActivity extends Activity implements GLSurfaceView.
                     LinearLayout container = (LinearLayout) v;
                     bottom_left.addView(view);
                     view.setVisibility(View.VISIBLE);
+                    imageAdapter.notifyDataSetChanged();
                    // myimage2.setVisibility(View.VISIBLE);
                     break;
                 case DragEvent.ACTION_DRAG_ENDED:
@@ -1134,6 +1197,7 @@ public class CaseLayoutEffectActivity extends Activity implements GLSurfaceView.
             }
         }
     }
+
 
 
     public void loadTextures() {

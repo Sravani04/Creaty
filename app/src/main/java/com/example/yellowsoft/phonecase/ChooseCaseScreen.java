@@ -84,13 +84,26 @@ public class ChooseCaseScreen extends Activity {
             }
         });
 
-        cart_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ChooseCaseScreen.this,CartPage.class);
-                startActivity(intent);
-            }
-        });
+        if (Session.GetCartProducts(this).size() == 0){
+            Log.e("cart","disabled");
+            cart_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(ChooseCaseScreen.this,CartEmpty.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+        }else {
+            cart_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(ChooseCaseScreen.this, CartPage.class);
+                    startActivity(intent);
+
+                }
+            });
+        }
 
         get_products();
 

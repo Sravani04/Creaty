@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     LinearLayout drawerView;
-    RelativeLayout mainView;
+    RelativeLayout mainView,cart;
     TextView home_btn,coll_btn,profile_btn,orders_btn;
 
 
@@ -75,8 +75,9 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         home_btn = (TextView) findViewById(R.id.home_btn);
         coll_btn = (TextView) findViewById(R.id.coll_btn);
-        profile_btn = (TextView) findViewById(R.id.profile_btn);
+       // profile_btn = (TextView) findViewById(R.id.profile_btn);
         orders_btn = (TextView) findViewById(R.id.orders_btn);
+        cart = (RelativeLayout) findViewById(R.id.cart);
 
         mDrawerLayout.setScrimColor(getResources().getColor(android.R.color.transparent));
 
@@ -130,16 +131,33 @@ public class MainActivity extends AppCompatActivity {
         };
 
 
-        cart_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,CartPage.class);
-                startActivity(intent);
-            }
-        });
+
 
         cart_items.setText(String.valueOf(Session.GetCartProducts(this).size()));
         Log.e("items",String.valueOf(Session.GetCartProducts(this).size()));
+
+        if (Session.GetCartProducts(this).size() == 0){
+            Log.e("cart","disabled");
+            cart_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(MainActivity.this,CartEmpty.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+        }else {
+            cart_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(MainActivity.this, CartPage.class);
+                    startActivity(intent);
+
+                }
+            });
+        }
+
+
 
 
 
@@ -201,34 +219,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        profile_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (Session.GetUserId(MainActivity.this).equals("-1")) {
-                    Intent intent = new Intent(MainActivity.this, LoginPage.class);
-                    startActivity(intent);
-                    finish();
-                }else {
-                    Intent intent = new Intent(MainActivity.this, MyProfilePage.class);
-                    startActivity(intent);
-                    mDrawerLayout.closeDrawer(GravityCompat.START, true);
-                }
-
-            }
-        });
+//        profile_btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (Session.GetUserId(MainActivity.this).equals("-1")) {
+//                    Intent intent = new Intent(MainActivity.this, LoginPage.class);
+//                    startActivity(intent);
+//                    finish();
+//                }else {
+//                    Intent intent = new Intent(MainActivity.this, MyProfilePage.class);
+//                    startActivity(intent);
+//                    mDrawerLayout.closeDrawer(GravityCompat.START, true);
+//                }
+//
+//            }
+//        });
 
         orders_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Session.GetUserId(MainActivity.this).equals("-1")) {
-                    Intent intent = new Intent(MainActivity.this, LoginPage.class);
-                    startActivity(intent);
-                    finish();
-                }else {
                     Intent intent = new Intent(MainActivity.this, OrdersPage.class);
                     startActivity(intent);
                     mDrawerLayout.closeDrawer(GravityCompat.START, true);
-                }
             }
         });
 

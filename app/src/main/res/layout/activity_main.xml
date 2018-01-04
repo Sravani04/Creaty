@@ -57,6 +57,7 @@
 
 
                     <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+                        android:id="@+id/cart"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
@@ -75,8 +76,8 @@
                             android:layout_width="18dp"
                             android:layout_height="20dp"
                             android:layout_alignRight="@id/cart_btn"
-                            android:background="@drawable/bg_orange"
                             android:layout_marginRight="5dp"
+                            android:background="@drawable/bg_orange"
                             android:gravity="center_horizontal"
                             android:text="1"
                             android:textColor="#FFF"
@@ -263,7 +264,8 @@
                             android:layout_gravity="center_vertical|center_horizontal"
                             android:adjustViewBounds="true"
                             android:padding="10dp"
-                            android:src="@drawable/logo_header" />
+                            android:src="@drawable/logo_header"
+                            android:tint="#ffffff" />
                     </LinearLayout>
                 </RelativeLayout>
 
@@ -291,6 +293,7 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:layout_margin="10dp"
                                 android:orientation="vertical">
 
                                 <TextView
@@ -298,30 +301,34 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
                                     android:gravity="center_vertical"
-                                    android:paddingLeft="20dp"
+                                    android:paddingLeft="10dp"
                                     android:text="HOME"
-                                    android:textColor="#000"
-                                    android:textSize="16sp" />
+                                    android:textColor="#ffffff"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
 
                                 <TextView
                                     android:id="@+id/coll_btn"
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
                                     android:gravity="center_vertical"
-                                    android:paddingLeft="20dp"
+                                    android:paddingLeft="10dp"
                                     android:text="COLLOCATIONS"
-                                    android:textColor="#000"
-                                    android:textSize="16sp" />
+                                    android:textColor="#ffffff"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
 
                                 <TextView
                                     android:id="@+id/profile_btn"
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
                                     android:gravity="center_vertical"
-                                    android:paddingLeft="20dp"
+                                    android:paddingLeft="10dp"
                                     android:text="MY PROFILE"
-                                    android:textColor="#000"
-                                    android:textSize="16sp" />
+                                    android:textColor="#ffffff"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    android:visibility="gone" />
 
 
                                 <TextView
@@ -329,10 +336,11 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="40dp"
                                     android:gravity="center_vertical"
-                                    android:paddingLeft="20dp"
+                                    android:paddingLeft="10dp"
                                     android:text="ORDERS"
-                                    android:textColor="#000"
-                                    android:textSize="16sp" />
+                                    android:textColor="#ffffff"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
 
 
                             </LinearLayout>

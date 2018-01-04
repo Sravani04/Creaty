@@ -53,7 +53,7 @@ public class GalleryAdapter extends BaseAdapter {
         View item_view = inflater.inflate(R.layout.gallery_items,null);
         TextView title = (TextView) item_view.findViewById(R.id.title);
         ImageView cat_image = (ImageView) item_view.findViewById(R.id.image);
-        Picasso.with(context).load(galleries.get(i).image).into(cat_image);
+        Picasso.with(context).load(galleries.get(i).image).placeholder(R.drawable.placeholder).into(cat_image);
         title.setText(galleries.get(i).title);
 
         return item_view;

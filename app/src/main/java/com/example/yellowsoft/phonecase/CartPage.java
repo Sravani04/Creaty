@@ -101,13 +101,8 @@ public class CartPage extends Activity {
         checkout_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Session.GetUserId(CartPage.this).equals("-1")) {
-                    Intent intent = new Intent(CartPage.this, LoginPage.class);
-                    startActivity(intent);
-                    finish();
-                }else {
-                   checkout();
-                }
+                checkout();
+
             }
         });
 
