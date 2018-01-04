@@ -46,7 +46,7 @@ public class MyProfilePage extends Activity {
             @Override
             public void onClick(View view) {
                 Session.SetUserId(MyProfilePage.this,"-1");
-                Intent intent = new Intent(MyProfilePage.this,LoginPage.class);
+                Intent intent = new Intent(MyProfilePage.this,MainActivity.class);
                 startActivity(intent);
                 finish();
             }

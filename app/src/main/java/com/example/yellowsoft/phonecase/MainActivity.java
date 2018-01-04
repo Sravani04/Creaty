@@ -17,14 +17,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
     ImageView menu_btn;
@@ -44,7 +48,10 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     LinearLayout drawerView;
     RelativeLayout mainView,cart;
-    TextView home_btn,coll_btn,profile_btn,orders_btn;
+    TextView home_btn,coll_btn,profile_btn,orders_btn,fname;
+    CircleImageView image_slide;
+    ImageView image;
+
 
 
     private void openNavigation(){
@@ -75,9 +82,12 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         home_btn = (TextView) findViewById(R.id.home_btn);
         coll_btn = (TextView) findViewById(R.id.coll_btn);
-       // profile_btn = (TextView) findViewById(R.id.profile_btn);
+        profile_btn = (TextView) findViewById(R.id.profile_btn);
         orders_btn = (TextView) findViewById(R.id.orders_btn);
         cart = (RelativeLayout) findViewById(R.id.cart);
+        fname = (TextView) findViewById(R.id.fname);
+        image_slide = (CircleImageView) findViewById(R.id.image_slide);
+        image = (ImageView) findViewById(R.id.image);
 
         mDrawerLayout.setScrimColor(getResources().getColor(android.R.color.transparent));
 
@@ -219,21 +229,43 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        profile_btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (Session.GetUserId(MainActivity.this).equals("-1")) {
-//                    Intent intent = new Intent(MainActivity.this, LoginPage.class);
-//                    startActivity(intent);
-//                    finish();
-//                }else {
-//                    Intent intent = new Intent(MainActivity.this, MyProfilePage.class);
-//                    startActivity(intent);
-//                    mDrawerLayout.closeDrawer(GravityCompat.START, true);
-//                }
-//
-//            }
-//        });
+
+
+            if (Session.GetUserId(MainActivity.this).equals("-1")){
+                fname.setVisibility(View.GONE);
+                image.setVisibility(View.VISIBLE);
+                image_slide.setVisibility(View.GONE);
+                profile_btn.setVisibility(View.GONE);
+                orders_btn.setVisibility(View.GONE);
+
+            }else {
+                fname.setVisibility(View.VISIBLE);
+                image_slide.setVisibility(View.VISIBLE);
+                image.setVisibility(View.GONE);
+                profile_btn.setVisibility(View.VISIBLE);
+                orders_btn.setVisibility(View.VISIBLE);
+            }
+
+
+
+
+
+
+        profile_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Session.GetUserId(MainActivity.this).equals("-1")) {
+                    Intent intent = new Intent(MainActivity.this, LoginPage.class);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    Intent intent = new Intent(MainActivity.this, MyProfilePage.class);
+                    startActivity(intent);
+                    mDrawerLayout.closeDrawer(GravityCompat.START, true);
+                }
+
+            }
+        });
 
         orders_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -299,6 +331,7 @@ public class MainActivity extends AppCompatActivity {
 
 
        get_banners();
+        get_members();
     }
 
 
@@ -328,6 +361,34 @@ public class MainActivity extends AppCompatActivity {
                             e1.printStackTrace();
                         }
 
+                    }
+                });
+    }
+
+
+    public void get_members(){
+        final KProgressHUD hud = KProgressHUD.create(MainActivity.this)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Please wait")
+                .setCancellable(true)
+                .setMaxProgress(100)
+                .show();
+        Ion.with(this)
+                .load(Session.SERVER_URL+"members.php")
+                .setBodyParameter("member_id",Session.GetUserId(MainActivity.this))
+                .asJsonArray()
+                .setCallback(new FutureCallback<JsonArray>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonArray result) {
+                        try {
+                            hud.dismiss();
+                            JsonObject jsonObject = result.get(0).getAsJsonObject();
+                            fname.setText(jsonObject.get("fname").getAsString());
+                            Picasso.with(MainActivity.this).load(jsonObject.get("image").getAsString()).placeholder(R.drawable.placeholder).into(image_slide);
+
+                        }catch (Exception e1){
+                            e1.printStackTrace();
+                        }
                     }
                 });
     }

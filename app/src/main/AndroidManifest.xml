@@ -50,6 +50,7 @@
         <activity android:name=".OrderDetailPage" android:screenOrientation="portrait"></activity>
         <activity android:name=".ThankyouScreen" android:screenOrientation="portrait"></activity>
         <activity android:name=".CartEmpty" android:screenOrientation="portrait"></activity>
+        <activity android:name=".GuestPage" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
