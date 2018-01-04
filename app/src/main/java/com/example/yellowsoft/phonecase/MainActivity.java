@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     LinearLayout drawerView;
     RelativeLayout mainView,cart;
-    TextView home_btn,coll_btn,profile_btn,orders_btn,fname;
+    TextView home_btn,coll_btn,profile_btn,orders_btn,fname,logout_btn;
     CircleImageView image_slide;
     ImageView image;
 
@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         fname = (TextView) findViewById(R.id.fname);
         image_slide = (CircleImageView) findViewById(R.id.image_slide);
         image = (ImageView) findViewById(R.id.image);
+        logout_btn = (TextView) findViewById(R.id.logout_btn);
 
         mDrawerLayout.setScrimColor(getResources().getColor(android.R.color.transparent));
 
@@ -237,14 +238,28 @@ public class MainActivity extends AppCompatActivity {
                 image_slide.setVisibility(View.GONE);
                 profile_btn.setVisibility(View.GONE);
                 orders_btn.setVisibility(View.GONE);
+                logout_btn.setVisibility(View.GONE);
+
 
             }else {
                 fname.setVisibility(View.VISIBLE);
-                image_slide.setVisibility(View.VISIBLE);
+                image_slide.setVisibility(View.GONE);
                 image.setVisibility(View.GONE);
                 profile_btn.setVisibility(View.VISIBLE);
                 orders_btn.setVisibility(View.VISIBLE);
+                logout_btn.setVisibility(View.VISIBLE);
             }
+
+
+            logout_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Session.SetUserId(MainActivity.this,"-1");
+                    Intent intent = new Intent(MainActivity.this,MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
 
 
 

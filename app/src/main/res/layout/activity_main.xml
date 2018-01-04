@@ -8,8 +8,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    >
+    android:fitsSystemWindows="true">
 
 
     <RelativeLayout
@@ -343,7 +342,7 @@
                                     android:layout_height="40dp"
                                     android:gravity="center_vertical"
                                     android:paddingLeft="10dp"
-                                    android:text="MY PROFILE"
+                                    android:text="MY ACCOUNT"
                                     android:textColor="#ffffff"
                                     android:textSize="16sp"
                                     android:textStyle="bold" />
@@ -356,6 +355,17 @@
                                     android:gravity="center_vertical"
                                     android:paddingLeft="10dp"
                                     android:text="ORDERS"
+                                    android:textColor="#ffffff"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/logout_btn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="40dp"
+                                    android:gravity="center_vertical"
+                                    android:paddingLeft="10dp"
+                                    android:text="LOGOUT"
                                     android:textColor="#ffffff"
                                     android:textSize="16sp"
                                     android:textStyle="bold" />

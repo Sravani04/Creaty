@@ -21,7 +21,7 @@ public class MyProfilePage extends Activity {
         edit_profile = (TextView) findViewById(R.id.edit_profile);
         change_password = (TextView) findViewById(R.id.change_password);
         gallery = (TextView) findViewById(R.id.gallery);
-        logout_btn = (TextView) findViewById(R.id.logout_btn);
+        //logout_btn = (TextView) findViewById(R.id.logout_btn);
         back_btn = (ImageView) findViewById(R.id.back_btn);
 
         edit_profile.setOnClickListener(new View.OnClickListener() {
@@ -42,15 +42,15 @@ public class MyProfilePage extends Activity {
             }
         });
 
-        logout_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Session.SetUserId(MyProfilePage.this,"-1");
-                Intent intent = new Intent(MyProfilePage.this,MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+//        logout_btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Session.SetUserId(MyProfilePage.this,"-1");
+//                Intent intent = new Intent(MyProfilePage.this,MainActivity.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
 
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
