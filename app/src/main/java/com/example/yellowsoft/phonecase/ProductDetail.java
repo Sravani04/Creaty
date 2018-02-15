@@ -66,9 +66,7 @@ public class ProductDetail extends Activity {
         cart_items = (TextView) findViewById(R.id.cart_items);
         productsfrom_api = new ArrayList<>();
         images = new ArrayList<>();
-        images.add(R.drawable.detailimage);
-        images.add(R.drawable.detailimage2);
-        images.add(R.drawable.detailimage3);
+
         if (getIntent()!=null && getIntent().hasExtra("products")){
             products = (Products) getIntent().getSerializableExtra("products");
         }

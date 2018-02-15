@@ -15,11 +15,12 @@ import com.google.gson.JsonParser;
 public class Session {
     static String sb_shake="sb_shake";
     public  static  final String mem_id="mem_id";
-    public static String SERVER_URL = "http://clients.mamacgroup.com/creaty/api/";
+    public static String SERVER_URL = "http://creatyapp.com/api/";
     public static final String cart_products = "cart_products";
     public static final String setting = "settings";
     public static final String gallery = "galleries";
-    public static String  PAYMENT_URL = "http://clients.mamacgroup.com/creaty/api/Tap.php?";
+  //  public static String  PAYMENT_URL = "http://clients.mamacgroup.com/creaty/api/Tap.php?";
+    public static String  PAYMENT_URL = "http://creatyapp.com/api/Tap.php?";
 
     public static Boolean get_shake_status(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);

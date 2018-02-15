@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     LinearLayout drawerView;
     RelativeLayout mainView,cart;
-    TextView home_btn,coll_btn,profile_btn,orders_btn,fname,logout_btn;
+    TextView home_btn,coll_btn,profile_btn,orders_btn,fname,logout_btn,login_btn,register_btn;
     CircleImageView image_slide;
     ImageView image;
 
@@ -89,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
         image_slide = (CircleImageView) findViewById(R.id.image_slide);
         image = (ImageView) findViewById(R.id.image);
         logout_btn = (TextView) findViewById(R.id.logout_btn);
+        login_btn = (TextView) findViewById(R.id.login_btn);
+        register_btn = (TextView) findViewById(R.id.register_btn);
 
         mDrawerLayout.setScrimColor(getResources().getColor(android.R.color.transparent));
 
@@ -126,8 +128,6 @@ public class MainActivity extends AppCompatActivity {
         bannersfrom_api = new ArrayList<>();
 
         images = new ArrayList<>();
-        images.add(R.drawable.image14);
-        images.add(R.drawable.image7);
         images.add(R.drawable.image12);
         adapter = new MainActivityAdapter(this,bannersfrom_api);
         viewPager.setAdapter(adapter);
@@ -239,6 +239,8 @@ public class MainActivity extends AppCompatActivity {
                 profile_btn.setVisibility(View.GONE);
                 orders_btn.setVisibility(View.GONE);
                 logout_btn.setVisibility(View.GONE);
+                login_btn.setVisibility(View.VISIBLE);
+                register_btn.setVisibility(View.VISIBLE);
 
 
             }else {
@@ -248,6 +250,8 @@ public class MainActivity extends AppCompatActivity {
                 profile_btn.setVisibility(View.VISIBLE);
                 orders_btn.setVisibility(View.VISIBLE);
                 logout_btn.setVisibility(View.VISIBLE);
+                login_btn.setVisibility(View.GONE);
+                register_btn.setVisibility(View.GONE);
             }
 
 
@@ -261,6 +265,24 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+
+            login_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(MainActivity.this,LoginPage.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+
+            register_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(MainActivity.this,RegisterPage.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
 
 
 

@@ -48,8 +48,7 @@ public class ChooseCaseScreen extends Activity {
         titles.add("Classic Grip");
         titles.add("Snap Case");
 
-        images.add(R.drawable.transparent_back2);
-        images.add(R.drawable.transparent_backcover);
+
 
         prices.add("$40 USD");
         prices.add("$35 USD");

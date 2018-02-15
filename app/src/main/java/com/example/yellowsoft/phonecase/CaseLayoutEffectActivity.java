@@ -183,6 +183,7 @@ public class CaseLayoutEffectActivity extends Activity implements GLSurfaceView.
     Bitmap mBitmap;
     int image_position;
     int text_position;
+    Bitmap bitmap;
 
 
 
@@ -272,7 +273,7 @@ public class CaseLayoutEffectActivity extends Activity implements GLSurfaceView.
         recList.setHasFixedSize(true);
         recList.setLayoutManager(layoutManager);
 
-        FilterAdapterFactory filterAdapter = new FilterAdapterFactory(this);
+        FilterAdapterFactory filterAdapter = new FilterAdapterFactory(this,CaseLayoutEffectActivity.this);
         recList.setAdapter(filterAdapter);
 
         recList.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
@@ -280,6 +281,7 @@ public class CaseLayoutEffectActivity extends Activity implements GLSurfaceView.
             public void onItemClick(View view, int position) {
                 setCurrentEffect(position);
                 mEffectView.requestRender();
+                //setCurrentEffect(mEffectView.getRenderMode());
             }
         }));
 
@@ -321,22 +323,19 @@ public class CaseLayoutEffectActivity extends Activity implements GLSurfaceView.
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
-
-
                 //effect_btn.callOnClick();
                 //hidden_rcview.setVisibility(View.VISIBLE);
-                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    if (shouldShowRequestPermissionRationale(
-                            Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        if (shouldShowRequestPermissionRationale(
+                                Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                        }
+                        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                        return;
                     }
-                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                            MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-                    return;
                 }
-
-
-
 //                mInitialized = false;
 //                mEffectView.setDrawingCacheEnabled(true);
 //                mEffectView.buildDrawingCache(true);
@@ -345,9 +344,32 @@ public class CaseLayoutEffectActivity extends Activity implements GLSurfaceView.
 //                mEffectView.destroyDrawingCache();
 //                myimage2.setImageBitmap(bitmap);
 
-                    mEffectView.setVisibility(View.GONE);
-                    mInitialized = false;
-                    bitmapPath = MediaStore.Images.Media.insertImage(getContentResolver(), getBitmapFromView(collage_view), "collage_share", null);
+                  mEffectView.setVisibility(View.GONE);
+                  mInitialized = false;
+                  String root = Environment.getExternalStorageDirectory().toString();
+                  File myDir = new File(root + "/saved_images");
+                  myDir.mkdirs();
+                  Random generator = new Random();
+                  int n = 10000;
+                  n = generator.nextInt(n);
+                  String fname = "temp_image_"+n+".jpg";
+                  File file = new File (myDir, fname);
+                  File folder = new File(Environment.getExternalStorageDirectory(), ".nomedia");
+                  folder.mkdir();
+                  if (file.exists ()) file.delete ();
+                try {
+                    FileOutputStream out = new FileOutputStream(file);
+                    bitmap = getBitmapFromView(collage_view);
+                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                    out.flush();
+                    out.close();
+                    Log.i("TAG", "Image SAVED=========="+file.getAbsolutePath());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+//                    bitmapPath = MediaStore.Images.Media.insertImage(getContentResolver(), getBitmapFromView(collage_view), "collage_share", null);
+                    bitmapPath = file.getAbsolutePath();
                     Log.e("bitmapPath", bitmapPath);
                     // mEffectView.setVisibility(View.VISIBLE);
                     if (bitmapPath != null) {
@@ -383,7 +405,10 @@ public class CaseLayoutEffectActivity extends Activity implements GLSurfaceView.
 
 
             }
+
+
         });
+
 
         if (Session.GetCartProducts(this).size() == 0){
             Log.e("cart","disabled");
@@ -401,8 +426,6 @@ public class CaseLayoutEffectActivity extends Activity implements GLSurfaceView.
                 public void onClick(View view) {
                     Intent intent = new Intent(CaseLayoutEffectActivity.this, CartPage.class);
                     startActivity(intent);
-
-
                 }
             });
         }
@@ -676,6 +699,8 @@ public class CaseLayoutEffectActivity extends Activity implements GLSurfaceView.
         DisplayMetrics displayMetrics =CaseLayoutEffectActivity.this.getResources().getDisplayMetrics();
         return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
+
+
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
         private int spanCount;
@@ -887,14 +912,16 @@ public class CaseLayoutEffectActivity extends Activity implements GLSurfaceView.
 
 
     public void pick_image() {
-        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            if (shouldShowRequestPermissionRationale(
-                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                if (shouldShowRequestPermissionRationale(
+                        Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                }
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                return;
             }
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-            return;
         }
 
         final String[] cases = {"Camera", "Gallery", "Choose from Library"};
@@ -1352,6 +1379,7 @@ public class CaseLayoutEffectActivity extends Activity implements GLSurfaceView.
     private void applyEffect() {
         mEffect.apply(mTextures[0], mImageWidth, mImageHeight, mTextures[1]);
 
+
     }
 
 
@@ -1425,8 +1453,10 @@ public class CaseLayoutEffectActivity extends Activity implements GLSurfaceView.
         Random generator = new Random();
         int n = 10000;
         n = generator.nextInt(n);
-        String fname = "Image-"+ n +".jpg";
+        String fname = "temp_image.jpg";
         File file = new File (myDir, fname);
+        File folder = new File(Environment.getExternalStorageDirectory(), ".nomedia");
+        folder.mkdir();
         if (file.exists ()) file.delete ();
         try {
             FileOutputStream out = new FileOutputStream(file);
@@ -1438,6 +1468,8 @@ public class CaseLayoutEffectActivity extends Activity implements GLSurfaceView.
             e.printStackTrace();
         }
     }
+
+
 
 
     public Bitmap takeScreenshot(GL10 gl) {
@@ -1466,6 +1498,7 @@ public class CaseLayoutEffectActivity extends Activity implements GLSurfaceView.
 
 //stuff that updates ui
                 bottom_left.setBackground(new BitmapDrawable(mBitmap));
+
 
             }
         });

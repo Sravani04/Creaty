@@ -26,20 +26,7 @@ public class TemplateScreen extends Activity {
         cart_btn = (ImageView) findViewById(R.id.cart_btn);
         recyclerView = (RecyclerView) findViewById(R.id.rv);
         images = new ArrayList<>();
-        images.add(R.drawable.iphone6);
-        images.add(R.drawable.iphone6s);
-        images.add(R.drawable.iphone6);
-        images.add(R.drawable.iphone6s);
-        images.add(R.drawable.iphone6);
-        images.add(R.drawable.iphone6s);
-        images.add(R.drawable.iphone6);
-        images.add(R.drawable.iphone6s);
-        images.add(R.drawable.iphone6);
-        images.add(R.drawable.iphone6s);
-        images.add(R.drawable.iphone6);
-        images.add(R.drawable.iphone6s);
-        images.add(R.drawable.iphone6);
-        images.add(R.drawable.iphone6s);
+
 
         adapter = new TemplateScreenAdapter(this,images);
         recyclerView.setAdapter(adapter);

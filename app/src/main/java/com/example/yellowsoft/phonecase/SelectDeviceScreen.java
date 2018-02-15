@@ -48,13 +48,9 @@ public class SelectDeviceScreen  extends Activity {
 
 
 
-        images.add(R.drawable.image7);
-        images.add(R.drawable.image6);
-        images.add(R.drawable.image5);
-        images.add(R.drawable.image4);
-        images.add(R.drawable.image3);
+
         images.add(R.drawable.placeholder);
-        images.add(R.drawable.imagelist1);
+
 
         titles.add("IPHONE X");
         titles.add("IPHONE 8");

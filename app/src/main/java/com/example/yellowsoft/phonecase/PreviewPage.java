@@ -66,6 +66,7 @@ public class PreviewPage extends Activity {
 
 
         Ion.with(this).load(myUri.toString()).intoImageView(preview);
+        Log.e("image", String.valueOf(myUri.toString()));
 
 //        final Bitmap bitmap = getIntent().getParcelableExtra("image");
 //        preview.setImageBitmap(bitmap);

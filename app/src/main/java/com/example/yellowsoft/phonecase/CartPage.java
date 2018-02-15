@@ -101,17 +101,18 @@ public class CartPage extends Activity {
         checkout_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Session.GetUserId(CartPage.this).equals("-1")){
-                    Intent intent = new Intent(CartPage.this,GuestPage.class);
-                    intent.putExtra("total", String.valueOf(total));
-                    intent.putExtra("dc", String.valueOf(delivery_charges));
-                    intent.putExtra("text",coupon_text.getText().toString());
-                    intent.putExtra("dv",discount_value.getText().toString());
-
-                    startActivity(intent);
-                }else {
-                    checkout();
-                }
+                checkout();
+//                if (Session.GetUserId(CartPage.this).equals("-1")){
+//                    Intent intent = new Intent(CartPage.this,GuestPage.class);
+//                    intent.putExtra("total", String.valueOf(total));
+//                    intent.putExtra("dc", String.valueOf(delivery_charges));
+//                    intent.putExtra("text",coupon_text.getText().toString());
+//                    intent.putExtra("dv",discount_value.getText().toString());
+//
+//                    startActivity(intent);
+//                }else {
+//
+//                }
 
             }
         });

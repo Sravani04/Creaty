@@ -56,10 +56,7 @@ public class ProductsActivity extends Activity {
 
 
         images = new ArrayList<>();
-        images.add(R.drawable.image11);
-        images.add(R.drawable.image10);
-        images.add(R.drawable.image9);
-        images.add(R.drawable.image8);
+
 
         if (getIntent()!=null && getIntent().hasExtra("custom"))
             custom = getIntent().getStringExtra("custom");

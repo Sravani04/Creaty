@@ -360,6 +360,28 @@
                                     android:textStyle="bold" />
 
                                 <TextView
+                                    android:id="@+id/login_btn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="40dp"
+                                    android:gravity="center_vertical"
+                                    android:paddingLeft="10dp"
+                                    android:text="LOGIN"
+                                    android:textColor="#ffffff"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/register_btn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="40dp"
+                                    android:gravity="center_vertical"
+                                    android:paddingLeft="10dp"
+                                    android:text="REGISTER"
+                                    android:textColor="#ffffff"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
                                     android:id="@+id/logout_btn"
                                     android:layout_width="wrap_content"
                                     android:layout_height="40dp"

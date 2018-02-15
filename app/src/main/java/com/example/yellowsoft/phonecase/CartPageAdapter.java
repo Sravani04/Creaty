@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.koushikdutta.ion.Ion;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ public class CartPageAdapter extends RecyclerView.Adapter<CartPageAdapter.Simple
     public void onBindViewHolder(final CartPageAdapter.SimpleViewHolder holder, final int position) {
         try {
             if (products.get(position).customization.equals("Yes")){
-                Picasso.with(context).load(products.get(position).uri).into(holder.product_image);
+                Ion.with(context).load(products.get(position).uri).intoImageView(holder.product_image);
                 Log.e("imaaa", products.get(position).uri);
             }else if (products.get(position).customization.equals("No")){
                 Picasso.with(context).load(products.get(position).images.get(0).image).placeholder(R.drawable.placeholder).into(holder.product_image);

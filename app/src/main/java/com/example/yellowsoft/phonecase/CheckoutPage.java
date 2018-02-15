@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -435,14 +436,18 @@ public class CheckoutPage extends AppCompatActivity {
     }
 
     private String convertToBase64(String imagePath) {
-
-
-            File file = new File(getRealPathFromUri(this, Uri.parse(imagePath)));
+        File file = new File(getRealPathFromURI(this, Uri.parse(imagePath)));
             Uri uri1 = Uri.parse(file.getPath());
+
+//        Uri uri = Uri.parse(imagePath);
+//        File myFile = new File(uri.getPath());
+
+//        Uri selectedImage=getImageContentUri(this,myFile);
             // File imageFile = new File(imagePath);
-            Log.e("path", imagePath);
+            Log.e("modifiedpath", imagePath);
 
             Bitmap bitmap = BitmapFactory.decodeFile(uri1.getPath());
+            Log.e("bitmpa", uri1.getPath());
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byte[] image = stream.toByteArray();
@@ -456,6 +461,30 @@ public class CheckoutPage extends AppCompatActivity {
             return img_str;
 
     }
+
+    public static Uri getImageContentUri(Context context, File imageFile) {
+        String filePath = imageFile.getAbsolutePath();
+        Cursor cursor = context.getContentResolver().query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                new String[] { MediaStore.Images.Media._ID },
+                MediaStore.Images.Media.DATA + "=? ",
+                new String[] { filePath }, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor
+                    .getColumnIndex(MediaStore.MediaColumns._ID));
+            Uri baseUri = Uri.parse("content://media/external/images/media");
+            return Uri.withAppendedPath(baseUri, "" + id);
+        } else {
+            if (imageFile.exists()) {
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.DATA, filePath);
+                return context.getContentResolver().insert(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            } else {
+                return null;
+            }
+        }}
 
 
     private String Base64(String imagePath) {
@@ -483,20 +512,34 @@ public class CheckoutPage extends AppCompatActivity {
 
 
 
-    public static String getRealPathFromUri(Context context, Uri contentUri) {
-        Cursor cursor = null;
-        try {
-            String[] proj = { MediaStore.Images.Media.DATA };
-            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
-            assert cursor != null;
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+//    public static String getRealPathFromUri(Context context, Uri contentUri) {
+//        Cursor cursor = null;
+//        try {
+//            String[] proj = { MediaStore.Images.Media.DATA };
+//            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+//            assert cursor != null;
+//            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+//            cursor.moveToFirst();
+//            return cursor.getString(column_index);
+//        } finally {
+//            if (cursor != null) {
+//                cursor.close();
+//            }
+//        }
+//    }
+
+    public String getRealPathFromURI(Context context,Uri contentUri) {
+        String result;
+        Cursor cursor = getContentResolver().query(contentUri, null, null, null, null);
+        if (cursor == null) {
+            result = contentUri.getPath();
+        } else {
             cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
         }
+        return result;
     }
 
 
@@ -534,6 +577,7 @@ public class CheckoutPage extends AppCompatActivity {
                     Log.e("paa_originL", t);
                     jsonArray1.add(jsonObject2);
                    // String extension = Base64(jsonArray.get(i).getAsJsonObject().get("gallerypath").getAsString()).replaceAll("^.*\\.", "");
+                    Log.e("paa_modified", convertToBase64(jsonArray.get(i).getAsJsonObject().get("uri").getAsString()));
                     jsonObject2.addProperty("modified_image", convertToBase64(jsonArray.get(i).getAsJsonObject().get("uri").getAsString()));
                     jsonObject2.addProperty("photo_text", jsonArray.get(i).getAsJsonObject().get("text").getAsString());
                    // jsonObject2.addProperty("orginal_image_ext", "." + extension);
